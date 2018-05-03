@@ -1,7 +1,5 @@
-
-var Jasmine2HtmlReporter = require('protractor-jasmine2-html-reporter');
+var HtmlReporter = require('protractor-beautiful-reporter');
 var SpecReporter = require('jasmine-spec-reporter');
-var pages = require('../Pages/Pages.js');
 
 // Configuration file.
 exports.config = {
@@ -81,13 +79,19 @@ exports.config = {
             browser.ignoreSynchronization = !flag;
         };
 
+
         // Add the jasmine html reporter
-        jasmine.getEnv().addReporter(new Jasmine2HtmlReporter({
-            savePath: './TestResults/report'+(new Date()).toString().split(' ').splice(1, 4).join('').split(':').join('-')+'/',
-            filePrefix: pages.getServer().substr(8,pages.getServer().indexOf('.')-8)+'-',
-            consolidate: true,
-            consolidateAll: false
-        }));
+        jasmine.getEnv().addReporter(new HtmlReporter({
+            baseDirectory: 'TestResults',
+            jsonsSubfolder: 'jsons',
+            screenshotsSubfolder: 'images',
+            excludeSkippedSpecs: true,
+            docTitle: 'Protractor Report',
+            docName: 'index.html',
+            preserveDirectory: true,
+            gatherBrowserLogs: true
+        }).getJasmine2Reporter());
+
 
         // Add the jasmine spec reporter
         jasmine.getEnv().addReporter(new SpecReporter({
